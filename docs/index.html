@@ -167,8 +167,8 @@ $(function(){
 
             if(data.Data[i].Label.slice(-3)=="BTC"){
                 // console.log(data.Data[i].LastPrice);
-                jpyPrice = jpy*data.Data[i].LastPrice;
-
+                var jpyPrice = jpy*data.Data[i].LastPrice;
+                var Volume = data.Data[i].Volume*jpyPrice
                 // 価格変動が＋なら緑、−なら赤にする
                 if(data.Data[i].Change>=0){
                     Change = '<td class="green">'+String(data.Data[i].Change)+'</td>';
@@ -177,9 +177,9 @@ $(function(){
                 }
                 appendtext ='<tr>'+
                     '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
-                    '<td>'+String(jpyPrice)+'</td>'+
+                    '<td>'+String(jpyPrice.toFixed(6))+'</td>'+
                     String(Change)+
-                    '<td>'+String(data.Data[i].Volume*jpyPrice)+'</td>'+
+                    '<td>'+String(Volume.toFixed(2))+'</td>'+
                 '</tr>'
 
     	    	ulObj.append(appendtext);
