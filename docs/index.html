@@ -35,7 +35,12 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-
+    <style>
+        <!--
+        .red {color: red}
+        .green{color: green}
+        -->
+    </style>
 </head>
 
 <body>
@@ -77,7 +82,7 @@
                 <div class="col-lg-12">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            Hover Rows
+                            草コイン一覧
                         </div>
                         <!-- /.panel-heading -->
                         <div class="panel-body">
@@ -85,10 +90,10 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Coin Name</th>
-                                            <th>LastPrice(¥)</th>
-                                            <th>LastPrice($)</th>
+                                            <th>通貨名</th>
+                                            <th>価格</th>
+                                            <th>前日比</th>
+                                            <th>出来高(円)</th>
                                         </tr>
                                     </thead>
                                     <tbody id="maintable">
@@ -137,19 +142,13 @@
     });
 
 $(function(){
-
     var jpy;
-
-
     $.ajax({
-          url:"https://api.zaif.jp/api/1/last_price/btc_jpy", //リクエストURL
-          // dataType: "jsonp",
-          // jsonp: false,
-          // jsonpCallback: 'callback',
+          url:"https://line.youandhack.com/getData.php", //リクエストURL
           type: "GET",
           success:function(jpydata) {
             console.log(jpydata.length);
-            jpy = jpydata.last_price;
+            jpy = jpydata;
         }
     });
 
@@ -163,17 +162,28 @@ $(function(){
 	    	ulObj = $("#maintable"),
 	    	len = data.Data.length;
 		for(var i = 0; i < len; i++) {
-            console.log(data.Data[i].LastPrice);
-            USD = jpy*data.Data[i].LastPrice;
 
-            appendtext ='<tr>'+
-                '<td>'+i+'</td>'+
-                '<td>'+String(data.Data[i].Label)+'</td>'+
-                '<td>'+String(data.Data[i].LastPrice)+'</td>'+
-                '<td>'+String(USD)+'</td>'+
-            '</tr>'
+            //BTC/DOGE/LTCの３種類での価格が提示されているが、BTCのみ表示
 
-	    	ulObj.append(appendtext);
+            if(data.Data[i].Label.slice(-3)=="BTC"){
+                // console.log(data.Data[i].LastPrice);
+                jpyPrice = jpy*data.Data[i].LastPrice;
+
+                // 価格変動が＋なら緑、−なら赤にする
+                if(data.Data[i].Change>=0){
+                    Change = '<td class="green">'+String(data.Data[i].Change)+'</td>';
+                }else{
+                    Change = '<td class="red">'+String(data.Data[i].Change)+'</td>';
+                }
+                appendtext ='<tr>'+
+                    '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
+                    '<td>'+String(jpyPrice)+'</td>'+
+                    String(Change)+
+                    '<td>'+String(data.Data[i].Volume*jpyPrice)+'</td>'+
+                '</tr>'
+
+    	    	ulObj.append(appendtext);
+            }
 	    }
 	    // $("#wrapper").text(data.Data);
 	  }
