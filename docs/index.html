@@ -141,7 +141,7 @@
 $(function(){
     var jpy;
     $.ajax({
-          url:"https://line.youandhack.com/getData.php", //リクエストURL
+          url:"http://dev.youandhack.com/getData.php", //BTCとJPYの価格を取得（zaifから）
           type: "GET",
           success:function(jpydata) {
             console.log(jpydata.length);
@@ -150,7 +150,7 @@ $(function(){
     });
 
     $.getJSON(
-	  "https://www.cryptopia.co.nz/api/GetMarkets", //リクエストURL
+	  "https://www.cryptopia.co.nz/api/GetMarkets", //cryptopiaのコイン一覧を取得
 	  null,       //送信データ
 	  function(data, status) {
 
