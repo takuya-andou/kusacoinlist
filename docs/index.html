@@ -141,7 +141,7 @@
 $(function(){
     var jpy;
     $.ajax({
-          url:"http://dev.youandhack.com/getData.php", //BTCとJPYの価格を取得（zaifから）
+          url:"https://dev.youandhack.com/getData.php", //BTCとJPYの価格を取得（zaifから）
           type: "GET",
           success:function(jpydata) {
             console.log(jpydata.length);
