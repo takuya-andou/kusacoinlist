@@ -88,7 +88,7 @@
                                     <thead>
                                         <tr>
                                             <th>通貨名</th>
-                                            <th>価格</th>
+                                            <th>価格(円)</th>
                                             <th>前日比</th>
                                             <th>出来高(円)</th>
                                         </tr>
@@ -174,9 +174,9 @@ $(function(){
                 }
                 appendtext ='<tr>'+
                     '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
-                    '<td>'+String(jpyPrice.toFixed(6))+'</td>'+
+                    '<td>'+String(jpyPrice.toFixed(6))+'円</td>'+
                     String(Change)+
-                    '<td>'+String(Volume.toFixed(2))+'</td>'+
+                    '<td>'+String(Volume.toFixed(2))+'円</td>'+
                 '</tr>'
 
     	    	ulObj.append(appendtext);
