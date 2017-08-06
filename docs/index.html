@@ -140,51 +140,55 @@
 
 $(function(){
     var jpy;
-    $.ajax({
-          url:"https://dev.youandhack.com/getData.php", //BTCとJPYの価格を取得（zaifから）
-          type: "GET",
-          success:function(jpydata) {
-            console.log(jpydata.length);
-            jpy = jpydata;
-        }
-    });
-
-    $.getJSON(
-	  "https://www.cryptopia.co.nz/api/GetMarkets", //cryptopiaのコイン一覧を取得
-	  null,       //送信データ
-	  function(data, status) {
-
-	    // 通信成功時の処理
-	    var
-	    	ulObj = $("#maintable"),
-	    	len = data.Data.length;
-		for(var i = 0; i < len; i++) {
-
-            //BTC/DOGE/LTCの３種類での価格が提示されているが、BTCのみ表示
-
-            if(data.Data[i].Label.slice(-3)=="BTC"){
-                // console.log(data.Data[i].LastPrice);
-                var jpyPrice = jpy*data.Data[i].LastPrice;
-                var Volume = data.Data[i].Volume*jpyPrice
-                // 価格変動が＋なら緑、−なら赤にする
-                if(data.Data[i].Change>=0){
-                    Change = '<td class="green">'+String(data.Data[i].Change)+'</td>';
-                }else{
-                    Change = '<td class="red">'+String(data.Data[i].Change)+'</td>';
-                }
-                appendtext ='<tr>'+
-                    '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
-                    '<td>'+String(jpyPrice.toFixed(6))+'円</td>'+
-                    String(Change)+
-                    '<td>'+String(Volume.toFixed(2))+'円</td>'+
-                '</tr>'
-
-    	    	ulObj.append(appendtext);
+    $.when(
+        $.ajax({
+              url:"https://dev.youandhack.com/getData.php", //BTCとJPYの価格を取得（zaifから）
+              type: "GET",
+              success:function(jpydata) {
+                console.log(jpydata.length);
+                console.log(jpydata);
+                jpy = jpydata;
             }
-	    }
-	    // $("#wrapper").text(data.Data);
-	  }
-	);
+        })
+    ).done(function() {
+        $.getJSON(
+    	  "https://www.cryptopia.co.nz/api/GetMarkets", //cryptopiaのコイン一覧を取得
+    	  null,       //送信データ
+    	  function(data, status) {
+
+    	    // 通信成功時の処理
+    	    var
+    	    	ulObj = $("#maintable"),
+    	    	len = data.Data.length;
+    		for(var i = 0; i < len; i++) {
+
+                //BTC/DOGE/LTCの３種類での価格が提示されているが、BTCのみ表示
+                console.log(jpy);
+                if(data.Data[i].Label.slice(-3)=="BTC"){
+                    // console.log(data.Data[i].LastPrice);
+                    var jpyPrice = jpy*data.Data[i].LastPrice;
+                    console.log(jpyPrice);
+                    var Volume = data.Data[i].Volume*jpyPrice
+                    // 価格変動が＋なら緑、−なら赤にする
+                    if(data.Data[i].Change>=0){
+                        Change = '<td class="green">'+String(data.Data[i].Change)+'</td>';
+                    }else{
+                        Change = '<td class="red">'+String(data.Data[i].Change)+'</td>';
+                    }
+                    appendtext ='<tr>'+
+                        '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
+                        '<td>'+String(jpyPrice.toFixed(6))+'円</td>'+
+                        String(Change)+
+                        '<td>'+String(Volume.toFixed(2))+'円</td>'+
+                    '</tr>'
+
+        	    	ulObj.append(appendtext);
+                }
+    	    }
+    	    // $("#wrapper").text(data.Data);
+    	  }
+    	);
+    });
 });
 
 
