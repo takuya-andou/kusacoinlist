@@ -63,8 +63,15 @@
             <div class="navbar-default sidebar" role="navigation">
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
-                        <li>
-                            <a href="#"><i class="fa fa-money fa-fw"></i> Donation</a>
+                        <li style="padding: 20px 0;text-align: center;">
+                            <B><i class="fa fa-money fa-fw"></i> Donation</B>
+                        </li>
+                        <li style="word-wrap: break-word;padding: 0 10px;">
+                            <p><B>BTC</B><BR>1FNAUDMhAD3d6uHahVcXBZrTdsX7NZyYCf</p>
+                            <p><B>ETH</B><BR>0xca410a34ee3d99c88e576c232d3048ba2f1138e1</p>
+                            <p><B>NEM</B><BR>NBGCULFHJAMYT5C5YAKQO4DDYFYR6ABZHMHSU4K5</p>
+                            <p><B>Mona</B><BR>MDB6mqj8aFFjkMoyVJFPGVDwzeAWVHbmcq</p>
+                            <p><B>BCH</B><BR>1E56KZydKeWighv9wQvsmZfLakzQJuPxH9</p>
                         </li>
                     </ul>
                 </div>
@@ -87,6 +94,7 @@
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
+                                            <th>id</th>
                                             <th>通貨名</th>
                                             <th>価格(円)</th>
                                             <th>前日比</th>
@@ -158,6 +166,7 @@ $(function(){
 
     	    // 通信成功時の処理
     	    var
+                coinid=1,
     	    	ulObj = $("#maintable"),
     	    	len = data.Data.length;
     		for(var i = 0; i < len; i++) {
@@ -176,12 +185,13 @@ $(function(){
                         Change = '<td class="red">'+String(data.Data[i].Change)+'</td>';
                     }
                     appendtext ='<tr>'+
+                        '<td>'+coinid+'</td>'+
                         '<td>'+String(data.Data[i].Label.slice( 0, -4 ))+'</td>'+
                         '<td>'+String(jpyPrice.toFixed(6))+'円</td>'+
                         String(Change)+
                         '<td>'+String(Volume.toFixed(2))+'円</td>'+
                     '</tr>'
-
+                    coinid += 1 
         	    	ulObj.append(appendtext);
                 }
     	    }
